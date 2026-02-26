@@ -158,6 +158,106 @@
       align-items: center;
       border-bottom: 1px solid #e2e8f0;
     }
+ /* CONTENEDOR PRINCIPAL PWA */
+    #contenido-pwa {
+      display: none;
+      width: 100vw;
+      height: 100dvh;
+    }
+
+    .wrap {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-container {
+      background: var(--card-bg);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+    }
+
+    /* HEADER AJUSTADO */
+    .chat-header {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .header-info h1 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.2; }
+    .header-info p { margin: 0; font-size: 11px; opacity: 0.8; }
+
+    /* MENSAJES */
+    .chat-messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 15px;
+      background: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message {
+      padding: 10px 14px;
+      border-radius: 15px;
+      max-width: 85%;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .bot-message { background: #e3f2fd; align-self: flex-start; border-bottom-left-radius: 2px; }
+    .user-message { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+
+    /* ÁREA DE ENTRADA */
+    .chat-input-container {
+      padding: 10px 15px;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding-bottom: env(safe-area-inset-bottom); /* Soporte para iPhone notch */
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 12px 18px;
+      border-radius: 25px;
+      border: 1px solid #e2e8f0;
+      outline: none;
+      font-size: 15px;
+      background: #f8f9fa;
+    }
+
+    .send-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 10px;
+      padding: 5px;
+      color: #94a3b8;
+      background: #fff;
+    }
+
 </style>
 </head>
 
@@ -180,48 +280,59 @@
     </p>
   </div>
 </div>
-
 <div id="contenido-pwa">
   <div class="wrap">
+    <div class="chat-container">
+      
       <header class="chat-header">
         <div class="header-info">
-          <h2 style="margin:0; font-size: 18px;">Asistente de Créditos</h2>
-          <span style="font-size: 12px; color: #64748b;">Panel de Administración</span>
+          <h1>Asistente Créditos Solidarios</h1>
+          <p>KOCO SOLIDARIO</p>
         </div>
-        <button onclick="location.reload()" style="padding: 8px 15px; border-radius: 8px; border: 1px solid #e2e8f0; background: white; cursor: pointer;">Cerrar Sesión</button>
-      </header>
-      <div id="chatMessages" style="flex:1; overflow-y: auto; padding: 20px; background: #f1f5f9;">
+
+        <div class="header-right">
+          <button class="btn-salir" id="btnSalir" onclick="location.reload()">Salir</button>
+          <div class="quote-container">
+             <p id="frase-imponente">
+               💖🤝 Tu trabajo abre oportunidades donde antes solo había sueños. 🌱💫
+             </p>
           </div>
+        </div>
+      </header>
+
+      <div class="chat-messages" id="chatMessages" aria-live="polite">
+            </div>
+
+      <div class="chat-input-container">
+        <input id="messageInput" class="chat-input" type="text" placeholder="Escribe aquí...">
+        <button id="sendBtn" class="send-btn">➤</button>
+      </div>
+
+      <div class="footer">Información confiable • TU AMIGO SOLIDARIO</div>
+    </div>
   </div>
 </div>
-
+ 
 <script>
-function simularLogin() {
-  const email = document.getElementById('loginEmail').value;
-  const pass = document.getElementById('loginPass').value;
-  
-  if(email !== "" && pass !== "") {
-    const btn = document.getElementById('btnEntrar');
-    btn.innerHTML = "Cargando...";
-    btn.style.opacity = "0.7";
-    
-    setTimeout(() => {
-      const login = document.getElementById('pantalla-login');
-      login.style.transition = "all 0.4s ease";
-      login.style.opacity = "0";
-      login.style.transform = "scale(1.1)";
+    function simularLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const pass = document.getElementById('loginPass').value;
       
-      setTimeout(() => {
-        login.style.display = 'none';
-        document.body.classList.add('modo-escritorio');
-        document.getElementById('contenido-pwa').style.display = 'block';
-      }, 400);
-    }, 800);
-  } else {
-    alert("Por favor, llena los campos");
-  }
-}
-</script>	
+      if(email !== "" && pass !== "") {
+        // Transición suave
+        const login = document.getElementById('pantalla-login');
+        login.style.transition = "opacity 0.5s";
+        login.style.opacity = "0";
+        
+        setTimeout(() => {
+            login.style.display = 'none';
+            document.getElementById('contenido-pwa').style.display = 'block';
+        }, 500);
+      } else {
+        alert("Por favor, llena los campos");
+      }
+    }
+</script>
 </body>
 <script>
     const defaultConfig = {
@@ -3073,6 +3184,7 @@ if ("serviceWorker" in navigator) {
 </body>
 
 </html>
+
 
 
 
