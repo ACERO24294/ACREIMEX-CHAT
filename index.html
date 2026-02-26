@@ -2,94 +2,99 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="icon" href="icon-192.png">
-  <meta name="theme-color" content="#ff6b35">
+  <meta name="theme-color" content="#1e40af">
   <title>Chatbot Koco Acreimex</title>
 
 <style>
     :root {
       --primary: #1e40af;
+      --primary-dark: #1e3a8a;
       --accent: #2563eb;
-      --bg-gradient: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+      --bg-gradient: radial-gradient(circle at top right, #2563eb, #1e40af, #111827);
+      --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
     }
 
-    * { 
-      box-sizing: border-box; 
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden; /* Evita el rebote de scroll en iOS */
-      background: #1e40af; /* Color sólido de respaldo */
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 0; padding: 0; width: 100%; height: 100%;
+      overflow: hidden;
+      background: #111827;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
-    /* PANTALLA DE LOGIN FULL SCREEN */
+    /* --- LOGIN PROFESIONAL --- */
     #pantalla-login {
-      display: flex; 
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100dvh; /* Altura dinámica */
-      width: 100vw;
+      display: flex; justify-content: center; align-items: center;
+      height: 100dvh; width: 100vw;
       background: var(--bg-gradient);
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 10000;
+      position: fixed; top: 0; left: 0; z-index: 10000;
       padding: 20px;
     }
 
     .login-card {
-      background: white;
-      padding: 40px 30px;
-      border-radius: 30px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-      width: 100%; 
+      background: rgba(255, 255, 255, 0.98);
+      padding: 50px 35px;
+      border-radius: 24px;
+      width: 100%;
       max-width: 400px;
       text-align: center;
-      /* Animación de entrada */
-      animation: fadeIn 0.5s ease-out;
+      box-shadow: var(--card-shadow);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .login-card img {
+      width: 90px;
+      height: auto;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
     }
 
     .login-card h1 {
-      margin: 10px 0 5px 0;
-      color: #1e40af;
-      font-size: 24px;
+      margin: 0 0 10px 0;
+      color: var(--primary-dark);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
     }
 
     .login-card p {
-      margin-bottom: 25px;
+      margin-bottom: 30px;
       color: #64748b;
+      font-size: 15px;
+      line-height: 1.5;
     }
+
+    /* --- INPUTS REFINADOS --- */
+    .input-group { margin-bottom: 15px; text-align: left; }
 
     .login-card input {
       width: 100%;
-      padding: 16px;
-      margin: 8px 0;
-      border: 2px solid #f1f5f9;
+      padding: 14px 18px;
+      border: 1.5px solid #e2e8f0;
       border-radius: 12px;
-      font-size: 16px; /* Evita zoom automático en iPhone */
+      font-size: 16px;
       background-color: #f8fafc;
-      transition: border-color 0.3s;
+      color: #1e293b;
+      transition: all 0.2s ease;
     }
 
     .login-card input:focus {
       border-color: var(--accent);
+      background-color: #fff;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
       outline: none;
     }
 
+    /* --- BOTÓN PREMIUM --- */
     .btn-entrar {
       width: 100%;
       padding: 16px;
@@ -97,185 +102,126 @@
       color: white;
       border: none;
       border-radius: 12px;
-      font-weight: bold;
-      font-size: 16px;
+      font-weight: 700;
+      font-size: 15px;
       cursor: pointer;
       margin-top: 20px;
-      transition: background 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
     }
 
-    .btn-entrar:active {
-      transform: scale(0.98);
-      background: #1a368e;
+    .btn-entrar:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.35);
     }
 
-    /* CONTENEDOR PRINCIPAL PWA */
-    #contenido-pwa {
-      display: none;
-      width: 100vw;
-      height: 100dvh;
+    .btn-entrar:active { transform: translateY(0); }
+
+    /* --- CHAT MODO ESCRITORIO --- */
+    #contenido-pwa { display: none; width: 100vw; height: 100dvh; }
+
+    body.modo-escritorio .wrap {
+      max-width: 100% !important;
+      width: 100vw !important;
     }
 
-    .wrap {
+    /* Estilos de Tabla que pediste */
+    .tabla-pwa {
       width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .chat-container {
-      background: var(--card-bg);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      width: 100%;
-    }
-
-    /* HEADER AJUSTADO */
-    .chat-header {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: white;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-shrink: 0;
-    }
-
-    .header-info h1 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.2; }
-    .header-info p { margin: 0; font-size: 11px; opacity: 0.8; }
-
-    /* MENSAJES */
-    .chat-messages {
-      flex-grow: 1;
-      overflow-y: auto;
-      padding: 15px;
-      background: #f8f9fa;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .message {
-      padding: 10px 14px;
-      border-radius: 15px;
-      max-width: 85%;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-
-    .bot-message { background: #e3f2fd; align-self: flex-start; border-bottom-left-radius: 2px; }
-    .user-message { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-
-    /* ÁREA DE ENTRADA */
-    .chat-input-container {
-      padding: 10px 15px;
+      border-collapse: collapse;
       background: white;
-      border-top: 1px solid #e2e8f0;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      padding-bottom: env(safe-area-inset-bottom); /* Soporte para iPhone notch */
+      margin: 10px 0;
     }
 
-    .chat-input {
-      flex: 1;
-      padding: 12px 18px;
-      border-radius: 25px;
+    body.modo-escritorio .tabla-pwa th, 
+    body.modo-escritorio .tabla-pwa td {
+      padding: 12px;
       border: 1px solid #e2e8f0;
-      outline: none;
-      font-size: 15px;
-      background: #f8f9fa;
+      text-align: center;
     }
 
-    .send-btn {
+    body.modo-escritorio .tabla-pwa th {
       background: var(--primary);
       color: white;
-      border: none;
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
     }
 
-    .footer {
-      text-align: center;
-      font-size: 10px;
-      padding: 5px;
-      color: #94a3b8;
-      background: #fff;
+    /* Header del Chat */
+    .chat-header { 
+      background: white; 
+      color: var(--primary-dark); 
+      padding: 15px 25px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      border-bottom: 1px solid #e2e8f0;
     }
-  </style>
+</style>
 </head>
 
 <body>
+
 <div id="pantalla-login">
   <div class="login-card">
-    <img src="icon-192.png" alt="Acreimex" style="width: 120px; height: auto; margin: 0 auto 15px auto; display: block;">
+    <img src="icon-192.png" alt="Acreimex">
     <h1>Koco Acreimex</h1>
     <p>Inicia sesión para continuar</p>
+    
     <input type="text" id="loginEmail" placeholder="Usuario o Correo" autocomplete="username">
+    <div style="height: 10px;"></div>
     <input type="password" id="loginPass" placeholder="Contraseña" autocomplete="current-password">
-    <button class="btn-entrar" id="btnEntrar" onclick="simularLogin()">ACCEDER</button>
+    
+    <button class="btn-entrar" id="btnEntrar" onclick="simularLogin()">Iniciar Sesión</button>
+    
+    <p style="margin-top: 25px; font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">
+      Sistema propiedad de  Créditos Solidarios
+    </p>
   </div>
 </div>
+
 <div id="contenido-pwa">
   <div class="wrap">
-    <div class="chat-container">
-      
       <header class="chat-header">
         <div class="header-info">
-          <h1>Asistente Créditos Solidarios</h1>
-          <p>KOCO SOLIDARIO</p>
+          <h2 style="margin:0; font-size: 18px;">Asistente de Créditos</h2>
+          <span style="font-size: 12px; color: #64748b;">Panel de Administración</span>
         </div>
-
-        <div class="header-right">
-          <button class="btn-salir" id="btnSalir" onclick="location.reload()">Salir</button>
-          <div class="quote-container">
-             <p id="frase-imponente">
-               💖🤝 Tu trabajo abre oportunidades donde antes solo había sueños. 🌱💫
-             </p>
-          </div>
-        </div>
+        <button onclick="location.reload()" style="padding: 8px 15px; border-radius: 8px; border: 1px solid #e2e8f0; background: white; cursor: pointer;">Cerrar Sesión</button>
       </header>
-
-      <div class="chat-messages" id="chatMessages" aria-live="polite">
-            </div>
-
-      <div class="chat-input-container">
-        <input id="messageInput" class="chat-input" type="text" placeholder="Escribe aquí...">
-        <button id="sendBtn" class="send-btn">➤</button>
-      </div>
-
-      <div class="footer">Información confiable • TU AMIGO SOLIDARIO</div>
-    </div>
+      <div id="chatMessages" style="flex:1; overflow-y: auto; padding: 20px; background: #f1f5f9;">
+          </div>
   </div>
 </div>
- 
+
 <script>
-    function simularLogin() {
-      const email = document.getElementById('loginEmail').value;
-      const pass = document.getElementById('loginPass').value;
+function simularLogin() {
+  const email = document.getElementById('loginEmail').value;
+  const pass = document.getElementById('loginPass').value;
+  
+  if(email !== "" && pass !== "") {
+    const btn = document.getElementById('btnEntrar');
+    btn.innerHTML = "Cargando...";
+    btn.style.opacity = "0.7";
+    
+    setTimeout(() => {
+      const login = document.getElementById('pantalla-login');
+      login.style.transition = "all 0.4s ease";
+      login.style.opacity = "0";
+      login.style.transform = "scale(1.1)";
       
-      if(email !== "" && pass !== "") {
-        // Transición suave
-        const login = document.getElementById('pantalla-login');
-        login.style.transition = "opacity 0.5s";
-        login.style.opacity = "0";
-        
-        setTimeout(() => {
-            login.style.display = 'none';
-            document.getElementById('contenido-pwa').style.display = 'block';
-        }, 500);
-      } else {
-        alert("Por favor, llena los campos");
-      }
-    }
-</script>
-	
+      setTimeout(() => {
+        login.style.display = 'none';
+        document.body.classList.add('modo-escritorio');
+        document.getElementById('contenido-pwa').style.display = 'block';
+      }, 400);
+    }, 800);
+  } else {
+    alert("Por favor, llena los campos");
+  }
+}
+</script>	
 </body>
 <script>
     const defaultConfig = {
@@ -292,6 +238,7 @@
       footer_text: "Información actualizada y confiable • TU AMIGO SOLIDARIO",
       input_placeholder: "Escribe tu pregunta..."
     };
+
     const keywords = {
   ingresos: ['ingresos','comprobantes','ventas','evidencias','flujo','utilidad','actualización','actualizacion','estado de resultados','ganancias','facturación','corte de caja','ingreso mensual','ingreso semanal','capacidad de pago','balance','movimientos','soporte de ingresos','actividad económica','ventas diarias','registro de ventas','flujo de efectivo','utilidades netas','comprobación'],
 
@@ -3126,5 +3073,6 @@ if ("serviceWorker" in navigator) {
 </body>
 
 </html>
+
 
 
