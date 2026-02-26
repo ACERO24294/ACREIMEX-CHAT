@@ -17,152 +17,149 @@
       --card-bg: #fff;
     }
 
-    /* PANTALLA DE LOGIN */
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f1f5f9;
+      height: 100dvh; /* Altura dinámica para móviles */
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    /* PANTALLA DE LOGIN RESPONSIVA */
+  /* PANTALLA DE LOGIN REFORZADA */
     #pantalla-login {
-      display: flex; /* Se controla luego por JS si es necesario ocultar */
+      display: flex; 
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      width: 100vw;
+      height: 100dvh; 
+      width: 100%;
       background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
       position: fixed;
       top: 0;
       left: 0;
       z-index: 10000;
-      color: white;
+      padding: 15px; /* Espacio mínimo para que no toque los bordes del cel */
     }
 
     .login-card {
       background: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      width: 90%;
-      max-width: 380px;
+      padding: 40px 25px; /* Más relleno interno para que se vea grande */
+      border-radius: 28px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      width: 100%; 
+      max-width: 420px; /* Se estira más en el celular */
       color: #333;
       text-align: center;
     }
 
+    /* INPUTS GRANDES PARA EVITAR EL ZOOM */
     .login-card input {
       width: 100%;
-      padding: 12px;
+      padding: 18px; /* Más altos para el dedo */
       margin: 10px 0;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 16px;
+      border: 2px solid #f1f5f9;
+      border-radius: 15px;
+      font-size: 18px; /* IMPORTANTE: 18px evita que el iPhone/Android haga zoom */
+      background-color: #f8fafc;
+      outline: none;
     }
-
+   
     .btn-entrar {
       width: 100%;
-      padding: 12px;
+      padding: 18px;
       background: var(--primary);
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 15px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 15px;
+      font-size: 18px;
+      text-transform: uppercase;
     }
 
-    /* BODY Y ESTRUCTURA UNIFICADA */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f1f5f9;
-      height: 100dvh;
-      overflow: hidden;
-    }
-
+    /* CONTENEDOR PRINCIPAL PWA */
     #contenido-pwa {
-      display: none; /* Se activa tras el login */
+      display: none;
       width: 100%;
       height: 100%;
     }
 
     .wrap {
       width: 100%;
-      height: 100dvh;
+      height: 100%;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
     }
 
     .chat-container {
       background: var(--card-bg);
       display: flex;
       flex-direction: column;
-      width: 100%;
-      max-width: 100%; /* Ocupa todo el ancho */
       height: 100%;
-      box-shadow: none;
+      width: 100%;
     }
 
-    /* HEADER */
+    /* HEADER AJUSTADO */
     .chat-header {
       background: linear-gradient(135deg, var(--primary), var(--accent));
       color: white;
-      padding: 15px 20px;
+      padding: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
     }
 
-    .chat-header h1 { margin: 0; font-size: 18px; font-weight: 600; }
-    .chat-header p { margin: 0; font-size: 12px; opacity: 0.9; }
-
-    .btn-salir {
-      background: rgba(255,255,255,0.2);
-      color: white;
-      border: 1px solid white;
-      padding: 5px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
-    }
+    .header-info h1 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.2; }
+    .header-info p { margin: 0; font-size: 11px; opacity: 0.8; }
 
     /* MENSAJES */
     .chat-messages {
       flex-grow: 1;
       overflow-y: auto;
-      padding: 20px;
+      padding: 15px;
       background: #f8f9fa;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 12px;
     }
 
     .message {
-      padding: 12px 16px;
+      padding: 10px 14px;
       border-radius: 15px;
       max-width: 85%;
-      line-height: 1.5;
       font-size: 14px;
-      word-wrap: break-word;
-      text-align: justify;
+      line-height: 1.4;
     }
 
-    .bot-message { background: #e3f2fd; border: 1px solid #bbdefb; align-self: flex-start; color: #1e293b; }
-    .user-message { background: var(--primary); color: white; align-self: flex-end; }
+    .bot-message { background: #e3f2fd; align-self: flex-start; border-bottom-left-radius: 2px; }
+    .user-message { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
 
-    /* INPUT */
+    /* ÁREA DE ENTRADA */
     .chat-input-container {
-      padding: 15px;
+      padding: 10px 15px;
       background: white;
       border-top: 1px solid #e2e8f0;
       display: flex;
       gap: 10px;
       align-items: center;
+      padding-bottom: env(safe-area-inset-bottom); /* Soporte para iPhone notch */
     }
 
     .chat-input {
       flex: 1;
       padding: 12px 18px;
       border-radius: 25px;
-      border: 2px solid #e2e8f0;
+      border: 1px solid #e2e8f0;
       outline: none;
       font-size: 15px;
+      background: #f8f9fa;
     }
 
     .send-btn {
@@ -170,78 +167,78 @@
       color: white;
       border: none;
       border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      cursor: pointer;
-      font-size: 20px;
+      width: 42px;
+      height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
     }
 
     .footer {
       text-align: center;
-      font-size: 11px;
-      padding: 8px;
+      font-size: 10px;
+      padding: 5px;
       color: #94a3b8;
       background: #fff;
-      border-top: 1px solid #f1f5f9;
     }
   </style>
 </head>
 
 <body>
 
-  <div id="pantalla-login" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100vw; background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%); position: fixed; top: 0; left: 0; z-index: 10000; color: white;">
-    <div class="login-card" style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 90%; max-width: 380px; color: #333; text-align: center;">
-      <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 5px;">Koco Acreimex</h1>
-      <p style="color: #64748b; margin-bottom: 20px;">Inicia sesión para continuar</p>
-      <input type="email" id="loginEmail" placeholder="Usuario o Correo" style="width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
-      <input type="password" id="loginPass" placeholder="Contraseña" style="width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
-      <button class="btn-entrar" id="btnEntrar" style="width: 100%; padding: 12px; background: #1e40af; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;">ACCEDER</button>
+  <div id="pantalla-login">
+    <div class="login-card">
+<img src="icon-192.png" alt="Acreimex" style="width: 160px; height: auto; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;">
+      <h1>Koco Acreimex</h1>
+      <p>Inicia sesión para continuar</p>
+      <input type="text" id="loginEmail" placeholder="Usuario o Correo">
+      <input type="password" id="loginPass" placeholder="Contraseña">
+      <button class="btn-entrar" id="btnEntrar" onclick="simularLogin()">ACCEDER</button>
     </div>
   </div>
 
-  <div id="contenido-pwa" style="display: none; width: 100%; height: 100dvh;">
-    <div class="wrap" style="width: 100%; height: 100%; display: flex; flex-direction: column;">
-      <div class="chat-container" role="application" aria-label="Asistente Créditos Solidarios - Koco" style="background: #fff; display: flex; flex-direction: column; height: 100%; width: 100%;">
+  <div id="contenido-pwa">
+    <div class="wrap">
+      <div class="chat-container">
         
-        <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #1e40af, #2563eb); color: white; padding: 15px 20px; flex-shrink: 0;">
-          <div>
-            <h1 id="company-title" style="margin: 0; font-size: 20px; font-weight: 600;">Asistente de la Coordinación de créditos solidarios</h1>
-            <p id="company-sub" style="margin: 0; font-size: 13px; opacity: 0.9;">KOCO SOLIDARIO</p>
+        <div class="chat-header">
+          <div class="header-info">
+            <h1>Asistente Créditos Solidarios</h1>
+            <p>KOCO SOLIDARIO</p>
           </div>
-          
-          <div style="text-align: right; min-width: 150px;">
-            <button class="btn-salir" id="btnSalir" style="margin-bottom: 8px; background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">
-              Cerrar Sesión
-            </button>
-            <div style="display: block;">
-              <big id="footer-message-small" style="font-style: italic; display: block;">
-                💖🤝 Tu trabajo abre oportunidades donde antes solo había sueños. 🌱💫
-              </big>
-            </div>
-          </div>
+          <button class="btn-salir" id="btnSalir" onclick="location.reload()">Salir</button>
         </div>
 
-        <div class="chat-messages" id="chatMessages" aria-live="polite" style="flex-grow: 1; overflow-y: auto; padding: 20px; background: #f8f9fa;"></div>
-
-        <div class="chat-input-container" style="padding: 15px; background: white; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; align-items: center;">
-          <input id="messageInput" class="chat-input" type="text" 
-                 placeholder="Escribe tu pregunta..." 
-                 maxlength="500" 
-                 aria-label="Escribe tu consulta"
-                 style="flex: 1; padding: 12px 18px; border-radius: 25px; border: 2px solid #e2e8f0; outline: none;">
-          <button id="sendBtn" class="send-btn" type="button" aria-label="Enviar mensaje" style="background: #1e40af; color: white; border: none; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center;">➤</button>
+        <div class="chat-messages" id="chatMessages">
+          <div class="message bot-message">¡Hola! Soy Koco. ¿En qué puedo ayudarte hoy?</div>
         </div>
 
-        <div class="footer" style="text-align: center; font-size: 11px; padding: 8px; color: #94a3b8; background: #fff; border-top: 1px solid #f1f5f9;">Información actualizada y confiable • TU AMIGO SOLIDARIO</div>
+        <div class="chat-input-container">
+          <input id="messageInput" class="chat-input" type="text" placeholder="Escribe aquí...">
+          <button id="sendBtn" class="send-btn">➤</button>
+        </div>
+
+        <div class="footer">Información confiable • TU AMIGO SOLIDARIO</div>
       </div>
     </div>
   </div>
 
+  <script>
+    // Función simple para probar el cambio de pantalla
+    function simularLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const pass = document.getElementById('loginPass').value;
+      
+      if(email !== "" && pass !== "") {
+        document.getElementById('pantalla-login').style.display = 'none';
+        document.getElementById('contenido-pwa').style.display = 'block';
+      } else {
+        alert("Por favor, llena los campos");
+      }
+    }
   </script>
-
+	
 </body>
 <script>
     const defaultConfig = {
@@ -3092,4 +3089,5 @@ if ("serviceWorker" in navigator) {
 </body>
 
 </html>
+
 
