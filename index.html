@@ -14,280 +14,141 @@
       --primary-dark: #1e3a8a;
       --accent: #2563eb;
       --bg-gradient: radial-gradient(circle at top right, #2563eb, #1e40af, #111827);
-      --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
     }
 
+    /* 1. RESET TOTAL PARA HABILITAR SCROLL */
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     html, body {
       margin: 0; padding: 0; width: 100%; height: 100%;
-      overflow: hidden;
       background: #111827;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden; /* Evita scroll en el fondo negro */
     }
 
-    /* --- LOGIN PROFESIONAL --- */
+    /* --- LOGIN GIGANTE --- */
     #pantalla-login {
       display: flex; justify-content: center; align-items: center;
-      height: 100dvh; width: 100vw;
-      background: var(--bg-gradient);
+      height: 100dvh; width: 100vw; background: white;
       position: fixed; top: 0; left: 0; z-index: 10000;
-      padding: 20px;
     }
 
     .login-card {
-      background: rgba(255, 255, 255, 0.98);
-      padding: 50px 35px;
-      border-radius: 24px;
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: var(--card-shadow);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 40px; text-align: center;
     }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px) scale(0.95); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
+    .login-card h1 { font-size: 38px !important; color: #1e40af; font-weight: 800; }
+    .login-card input { width: 100%; max-width: 500px; padding: 22px !important; font-size: 22px !important; margin-bottom: 20px; border-radius: 16px; border: 2px solid #e2e8f0; }
+    .btn-entrar { width: 100%; max-width: 500px; padding: 22px !important; font-size: 22px !important; font-weight: 800; background: var(--primary); color: white; border-radius: 16px; border: none; cursor: pointer; }
 
-    .login-card img {
-      width: 90px;
-      height: auto;
-      margin-bottom: 20px;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
-    }
-
-    .login-card h1 {
-      margin: 0 0 10px 0;
-      color: var(--primary-dark);
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-    }
-
-    .login-card p {
-      margin-bottom: 30px;
-      color: #64748b;
-      font-size: 15px;
-      line-height: 1.5;
-    }
-
-    /* --- INPUTS REFINADOS --- */
-    .input-group { margin-bottom: 15px; text-align: left; }
-
-    .login-card input {
-      width: 100%;
-      padding: 14px 18px;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 16px;
-      background-color: #f8fafc;
-      color: #1e293b;
-      transition: all 0.2s ease;
-    }
-
-    .login-card input:focus {
-      border-color: var(--accent);
-      background-color: #fff;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-      outline: none;
-    }
-
-    /* --- BOTÓN PREMIUM --- */
-    .btn-entrar {
-      width: 100%;
-      padding: 16px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-      margin-top: 20px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
-    }
-
-    .btn-entrar:hover {
-      background: var(--primary-dark);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 15px rgba(30, 64, 175, 0.35);
-    }
-
-    .btn-entrar:active { transform: translateY(0); }
-
-    /* --- CHAT MODO ESCRITORIO --- */
-    #contenido-pwa { display: none; width: 100vw; height: 100dvh; }
-
-    body.modo-escritorio .wrap {
-      max-width: 100% !important;
-      width: 100vw !important;
-    }
-/* --- ESTILO DE TABLAS PROFESIONAL --- */
-table {
-    width: 100% !important;
-    table-layout: fixed; /* Fuerza a las columnas a respetar el ancho del contenedor */
-    border-collapse: collapse;
-    margin-bottom: 25px; /* Espacio generoso entre tablas */
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    border-radius: 8px;
-    overflow: hidden; /* Para que los bordes redondeados funcionen */
-}
-
-th, td {
-    border: 1px solid #e2e8f0;
-    padding: 10px 5px;
-    text-align: center; /* Alineación estándar para datos */
-    word-wrap: break-word; 
-    overflow-wrap: break-word;
-    line-height: 1.2;
-}
-
-th {
-    background-color: #1e40af; /* Azul primario */
-    color: white;
-    font-weight: 500;
-    text-transform: uppercase;
-    font-size: 13px;
-}
-
-/* --- MEJORA PARA DATOS FINANCIEROS --- */
-@media screen and (max-width: 600px) {
-    th, td {
-        font-size: 7.5px !important; /* El tamaño que ya definiste */
-        white-space: nowrap;         /* <--- Evita que el texto salte de línea */
-        letter-spacing: -0.4px;      /* <--- Junta un poco las letras para ganar espacio */
-        padding: 6px 1px !important; /* Reducimos el padding lateral al mínimo */
-    }
-
-    /* La columna de Periodicidad es la ÚNICA que puede tener 2 líneas si es muy larga */
-    td:nth-child(6) {
-        white-space: normal; 
-        line-height: 1.1;
-    }
-}
-/* Evita que el texto se pegue a los bordes de la celda */
-td {
-    vertical-align: middle;
-}/* --- OPCIONAL: EFECTO CEBRA PARA LECTURA RÁPIDA --- */
-tr:nth-child(even) {
-    background-color: #f8fafc;
-}
-    /* Header del Chat */
-    .chat-header { 
-      background: white; 
-      color: var(--primary-dark); 
-      padding: 15px 25px; 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center;
-      border-bottom: 1px solid #e2e8f0;
-    }
- /* CONTENEDOR PRINCIPAL PWA */
+    /* --- CONTENEDOR PWA --- */
     #contenido-pwa {
-      display: none;
-      width: 100vw;
-      height: 100dvh;
+      display: none; 
+      width: 100vw; 
+      height: 100dvh; 
+      background: #f8f9fa;
     }
 
+    /* EL WRAP DEBE SER FLEX Y OCUPAR TODO EL ALTO */
     .wrap {
       width: 100%;
-      height: 100%;
+      max-width: 1400px !important; 
+      height: 100%; 
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
     }
 
+    /* EL CONTENEDOR DEL CHAT TAMBIÉN DEBE SER FLEX */
     .chat-container {
-      background: var(--card-bg);
       display: flex;
       flex-direction: column;
       height: 100%;
       width: 100%;
+      overflow: hidden; /* Evita que el contenedor se estire hacia afuera */
     }
 
-    /* HEADER AJUSTADO */
+    /* --- HEADER FIJO --- */
     .chat-header {
+      flex-shrink: 0; 
       background: linear-gradient(135deg, var(--primary), var(--accent));
       color: white;
-      padding: 15px;
+      padding: 15px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    /* --- MOTOR DEL SCROLL (REFORMADO) --- */
+    .chat-messages {
+      flex: 1 1 auto; /* Esto obliga al área a estirarse y contraerse */
+      overflow-y: auto !important; /* Habilita el scroll */
+      padding: 20px;
+      background: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Aseguramos que los elementos dentro (tablas, simuladores) no rompan el layout */
+    .chat-messages > * {
       flex-shrink: 0;
     }
 
-    .header-info h1 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.2; }
-    .header-info p { margin: 0; font-size: 11px; opacity: 0.8; }
+    /* BARRA DE SCROLL VISIBLE EN ESCRITORIO */
+    .chat-messages::-webkit-scrollbar { width: 10px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-  .chat-messages {
-    flex-grow: 1;
-    overflow-y: auto;
-    /* Reducimos de 18px a 8px en los lados para ganar espacio para la tabla */
-    padding: 15px 8px; 
-    background: #f8f9fa;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+    /* --- MENSAJES Y TABLAS --- */
     .message {
-      padding: 10px 14px;
+      padding: 15px 20px;
+      max-width: 90%;
+      font-size: 18px !important;
+      line-height: 1.5;
       border-radius: 15px;
-      max-width: 95%;
-      font-size: 14px;
-      line-height: 1.4;
     }
 
-    .bot-message { background: #e3f2fd; align-self: flex-start; border-bottom-left-radius: 2px; }
-    .user-message { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+    .bot-message { background: #e3f2fd; align-self: flex-start; }
+    .user-message { background: var(--primary); color: white; align-self: flex-end; }
 
-    /* ÁREA DE ENTRADA */
+    .tabla-koco-universal {
+      width: 100% !important;
+      table-layout: auto !important;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+
+    .tabla-koco-universal th {
+      background-color: #1e40af; color: white;
+      padding: 12px 6px; font-size: 14px !important;
+      white-space: normal;
+    }
+
+    /* --- INPUT Y FOOTER FIJOS ABAJO --- */
     .chat-input-container {
-      padding: 10px 15px;
+      flex-shrink: 0;
+      padding: 15px 25px;
       background: white;
       border-top: 1px solid #e2e8f0;
       display: flex;
       gap: 10px;
-      align-items: center;
-      padding-bottom: env(safe-area-inset-bottom); /* Soporte para iPhone notch */
     }
 
     .chat-input {
-      flex: 1;
-      padding: 12px 18px;
-      border-radius: 25px;
-      border: 1px solid #e2e8f0;
-      outline: none;
-      font-size: 15px;
-      background: #f8f9fa;
+      flex: 1; padding: 15px 20px; border-radius: 25px;
+      border: 1px solid #e2e8f0; font-size: 18px; outline: none;
     }
 
-    .send-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
+    .send-btn { background: var(--primary); color: white; border-radius: 50%; width: 45px; height: 45px; border:none; cursor:pointer;}
 
-    .footer {
-      text-align: center;
-      font-size: 10px;
-      padding: 5px;
-      color: #94a3b8;
-      background: #fff;
-    }
+    .footer { flex-shrink: 0; text-align: center; font-size: 12px; padding: 10px; color: #94a3b8; background: white; }
 
+    @media (max-width: 600px) {
+      .message { max-width: 100%; font-size: 16px !important; }
+      .tabla-koco-universal th { font-size: 10px !important; }
+    }
 </style>
 </head>
 
@@ -3214,6 +3075,5 @@ if ("serviceWorker" in navigator) {
 </body>
 
 </html>
-
 
 
