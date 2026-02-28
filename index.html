@@ -130,55 +130,60 @@
     }
 
 /* --- ESTILO DE TABLAS PROFESIONAL --- */
+/* --- ESTILO DE TABLAS PROFESIONAL ADAPTADO --- */
 table {
     width: 100%;
-    table-layout: fixed; /* FUERZA a que las columnas respeten el ancho de pantalla */
+    /* CAMBIO: Usamos 'auto' para que las celdas se ajusten al contenido */
+    table-layout: auto; 
     border-collapse: collapse;
-    word-wrap: break-word;
+    margin: 10px 0;
 }
 
 th, td {
     border: 1px solid #000;
-    padding: 6px 2px; /* Padding mínimo para ganar espacio */
+    padding: 6px 4px; /* Un poco más de aire lateral */
     text-align: center;
     vertical-align: middle;
-    font-size: 11px; /* Tamaño pequeño para que quepa en móviles */
-    line-height: 1.1;
-
-    /* CONTROL DE SALTO DE LÍNEA EXTREMO */
-    white-space: normal;      /* Permite saltar línea */
-    overflow-wrap: break-word; /* Rompe palabras si es necesario */
-    word-break: break-word;
+    font-size: 11px;
+    line-height: 1.2;
+    
+    /* Control de salto de línea */
+    white-space: normal;      
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
 }
 
 th {
     background-color: #1e40af;
     color: white;
     font-weight: bold;
-    /* Ajustamos el alto para que el texto largo crezca hacia abajo */
     height: auto; 
 }
-/* --- MEJORA PARA DATOS FINANCIEROS --- */
+
+/* --- OPTIMIZACIÓN DINÁMICA PARA MÓVILES --- */
 @media screen and (max-width: 600px) {
-    th, td {
-        font-size: 7.5px !important; /* El tamaño que ya definiste */
-        white-space: nowrap;         /* <--- Evita que el texto salte de línea */
-        letter-spacing: -0.4px;      /* <--- Junta un poco las letras para ganar espacio */
-        padding: 6px 1px !important; /* Reducimos el padding lateral al mínimo */
+    table {
+        table-layout: auto; /* Fundamental para que se acorten los cuadros pequeños */
+        width: 100%;
     }
 
-    /* La columna de Periodicidad es la ÚNICA que puede tener 2 líneas si es muy larga */
-    td:nth-child(6) {
-        white-space: normal; 
-        line-height: 1.1;
+    th, td {
+        font-size: 9px !important; /* Equilibrio entre legibilidad y espacio */
+        padding: 4px 1px !important;
+        /* Quitamos cualquier ancho forzado para que se encojan al mínimo */
+        width: auto !important; 
     }
-}
-/* Evita que el texto se pegue a los bordes de la celda */
-td {
-    vertical-align: middle;
-}/* --- OPCIONAL: EFECTO CEBRA PARA LECTURA RÁPIDA --- */
-tr:nth-child(even) {
-    background-color: #f8fafc;
+
+    /* Forzamos a que las columnas de montos no se rompan (ej: que el $ no quede solo) */
+    td:nth-child(2), td:nth-child(3) {
+        white-space: nowrap !important;
+    }
+
+    /* La columna de Periodicidad (columna 5) es la que suele ser más larga, 
+       le permitimos ser la "dueña" del espacio sobrante */
+    td:nth-child(5) {
+        min-width: 70px; 
+    }
 }
     /* Header del Chat */
     .chat-header { 
@@ -364,6 +369,108 @@ tr:nth-child(even) {
       }
     }
 </script>
+<script>
+/* --- SISTEMA GLOBAL DE SEGUIMIENTO Y DESPEDIDA KOCO --- */
+let timerSeguimiento;
+let timerInactividad;
+
+// 1. Motor de Mensajes Aleatorios por Horario
+function obtenerDespedidaFinal() {
+    const h = new Date().getHours();
+    const morning = ["🌅 Fue un gusto atenderte,que  tengas  un bendecido🤝"];
+    const afternoon = ["☀️ Fue un gusto atenderte,que  tengas  un  bendecido🤝"];
+    const night = ["🌙Fue un gusto atenderte,que  tengas un  bendecido🤝"];
+    let messages = (h >= 6 && h < 12) ? morning : (h >= 12 && h < 18) ? afternoon : night;
+    return messages[Math.floor(Math.random() * messages.length)];
+}
+
+// 2. Función de Inyección de Mensajes (Bot)
+function botEscribeMensaje(texto) {
+    const container = document.querySelector('.chat-messages');
+    if(!container) return;
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'message bot-message';
+    msgDiv.innerHTML = texto;
+    container.appendChild(msgDiv);
+    container.scrollTop = container.scrollHeight;
+}
+
+// 3. Activador de Seguimiento (Pregunta "¿Algo más?")
+function activarSeguimientoGlobal() {
+    clearTimeout(timerSeguimiento);
+    clearTimeout(timerInactividad);
+
+    timerSeguimiento = setTimeout(() => {
+        botEscribeMensaje("¿Hay algo más en lo que te pueda servir? 😊");
+
+        // 30 segundos de inactividad después de la pregunta
+        timerInactividad = setTimeout(() => {
+            botEscribeMensaje(obtenerDespedidaFinal());
+        }, 30000);
+    }, 10000); // 10 segundos después de cualquier respuesta del bot
+}
+
+// 4. Interceptor de Respuestas del Usuario (Detección de "No/Gracias")
+function procesarEntradaUsuario(valor) {
+    const lower = valor.toLowerCase().trim();
+    const despedidas = ["no", "gracias", "nada", "ninguna", "n", "todo bien", "adios", "eso es todo", "no gracias"];
+
+    if (despedidas.some(neg => lower === neg || lower.includes(neg))) {
+        clearTimeout(timerSeguimiento);
+        clearTimeout(timerInactividad);
+        
+        // Despedida inmediata con leve retraso natural
+        setTimeout(() => botEscribeMensaje(obtenerDespedidaFinal()), 600);
+        return true; // Es una despedida
+    }
+    
+    // Si no es despedida, limpiamos timers para esperar la nueva respuesta del bot
+    clearTimeout(timerSeguimiento);
+    clearTimeout(timerInactividad);
+    return false; 
+}
+
+/* --- MONITORES DE EVENTOS --- */
+
+// Vigilante de Mensajes del Bot (MutationObserver)
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+            if (node.classList && node.classList.contains('bot-message')) {
+                const texto = node.innerText || "";
+                // Evitar que el bot reaccione a sus propias preguntas de seguimiento o despedidas
+                const esSeguimiento = texto.includes("¿Hay algo más");
+                const esDespedida = texto.includes("Gracias por") || texto.includes("gusto ayudarte") || texto.includes("buen día") || texto.includes("buena tarde") || texto.includes("noches");
+
+                if (!esSeguimiento && !esDespedida) {
+                    activarSeguimientoGlobal();
+                }
+            }
+        });
+    });
+});
+
+const chatContainer = document.querySelector('.chat-messages');
+if (chatContainer) observer.observe(chatContainer, { childList: true });
+
+// Listeners de Interfaz (Click y Enter)
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.querySelector('.send-btn');
+    const input = document.querySelector('.chat-input');
+
+    if (btn && input) {
+        const manejarEnvio = () => {
+            const valor = input.value;
+            procesarEntradaUsuario(valor);
+        };
+
+        btn.addEventListener('click', manejarEnvio);
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') manejarEnvio();
+        });
+    }
+});
+</script>
 </body>
 <script>
     const defaultConfig = {
@@ -493,7 +600,16 @@ tr:nth-child(even) {
 
     function getResponse(input) {
       const lower = input.toLowerCase().trim();
-// Manejar respuestas SI/NO según el contexto
+
+      // --- BLOQUE DE CONTROL DE DESPEDIDA (Prioridad 1) ---
+      const despedidasEfectivas = ["no", "gracias", "nada", "ninguna", "n", "todo bien", "eso es todo", "no gracias", "adios", "adiós"];
+      if (despedidasEfectivas.some(neg => lower === neg || lower === neg + ".")) {
+          clearTimeout(timerSeguimiento);
+          clearTimeout(timerInactividad);
+          return { type: 'farewell', content: obtenerDespedidaFinal() };
+      }
+
+
 if (conversationContext && includesKeyword(lower, keywords.si)) {
   if (conversationContext === 'impulso_pregunta') {
     conversationContext = null;
@@ -550,30 +666,11 @@ if (conversationContext && includesKeyword(lower, keywords.si)) {
     container.appendChild(contentDiv);
 
     // PIE DE PÁGINA
-    const footer = document.createElement("p");
-    footer.style.textAlign = "justify";
-    footer.style.fontWeight = "bold";
-    footer.style.color = "#1f3c73";
-    footer.style.marginTop = "20px";
-    footer.style.fontSize = "15px";
-    footer.textContent = "¿Hay algo más en lo que te pueda servir? 😊";
-    container.appendChild(footer);
-
+    
     return { type: 'html', content: container };
   }
 }
-     
-      if (farewellKeywords.some(kw => lower === kw || lower.includes(kw))) {
-        const h = new Date().getHours();
-        const morning = ["😊 Gracias por comunicarte con Koco. ¡Que tengas un excelente día! 🤝","🌅 Fue un gusto ayudarte — que tu mañana sea productiva.","☀️ Gracias por usar Créditos Solidarios. ¡Éxito en tu día!"];
-        const afternoon = ["☀️ Fue un gusto apoyarte, ¡te deseo una tarde productiva!","☀️ Gracias por comunicarte con Koco. ¡Que tengas una excelente tarde! 🤝","🫶 Gracias por tu tiempo — que la tarde te sea favorable."];
-        const night = ["🌙 Descansa, gracias por confiar en Créditos Solidarios.","🌟 Que tengas buenas noches — Koco siempre está para ayudarte.","😴 Gracias por comunicarte. ¡Hasta pronto y buenas noches!"];
-        let messages;
-        if (h >= 6 && h < 12) messages = morning;
-        else if (h >= 12 && h < 18) messages = afternoon;
-        else messages = night;
-        return { type: 'text', content: messages[Math.floor(Math.random() * messages.length)] };
-      }
+
 // Detectar pregunta sobre Impulso Solidario
 const impulsoDirecto = lower.includes('impulso') && lower.includes('solidario');
 const esCalculadora = lower.includes('calculadora') || lower.includes('simular');
