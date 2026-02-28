@@ -362,9 +362,9 @@ let timerInactividad;
 // 1. Motor de Mensajes Aleatorios por Horario
 function obtenerDespedidaFinal() {
     const h = new Date().getHours();
-    const morning = ["🌅 Fue un gusto atenderte,que  tengas  un bendecido🤝"];
-    const afternoon = ["☀️ Fue un gusto atenderte,que  tengas  un  bendecido🤝"];
-    const night = ["🌙Fue un gusto atenderte,que  tengas un  bendecido🤝"];
+    const morning = ["🌅 Fue un gusto atenderte,que  tengas  un bendecido día 🤝"];
+    const afternoon = ["☀️ Fue un gusto atenderte,que  tengas  un  bendecido día 🤝"];
+    const night = ["🌙Fue un gusto atenderte,que  tengas un  bendecido día 🤝"];
     let messages = (h >= 6 && h < 12) ? morning : (h >= 12 && h < 18) ? afternoon : night;
     return messages[Math.floor(Math.random() * messages.length)];
 }
@@ -3293,6 +3293,7 @@ if ("serviceWorker" in navigator) {
 </body>
 
 </html>
+
 
 
 
