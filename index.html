@@ -375,7 +375,9 @@
 
   generalidades: ['fuera de sucursal','campo','desemboloso en campo','entrega en campo'],
 
-  esquema: [   
+ desembolso: ['desembolso', 'proceso de desembolso', 'actividades previas', 'impresión de documentos', 'documentos base', 'ajustes en sistema', 'revisión de firmas', 'entrega de plan', 'control de pagos'],
+
+	esquema: [   
     'esquema',
     'esquema de evaluación',
     'evaluación asesores',
@@ -625,6 +627,122 @@ if (impulsoDirecto && !esCalculadora) {
 
   return { type: 'html', content: cardContainer };
 }
+	if (keywords.desembolso && keywords.desembolso.some(kw => lower.includes(kw))) {
+  const container = document.createElement("div");
+
+  // --- FUNCIÓN PARA CREAR LAS TARJETAS INDEPENDIENTES ---
+  const crearTarjetaProceso = (contenidoHtml) => {
+    const div = document.createElement("div");
+    div.style.cssText = `
+      background-color: #fdf5e8;
+      border-left: 6px solid #6495ED;
+      border-top: 1px solid #e0e0e0;
+      border-right: 1px solid #e0e0e0;
+      border-bottom: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 22px;
+      margin-bottom: 15px;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    `;
+    div.innerHTML = `<div style="font-size: 14px; color: #000; line-height: 1.6;">${contenidoHtml}</div>`;
+    return div;
+  };
+
+  // TÍTULO PRINCIPAL (Diseño de Cinta Corporativa Unificado)
+  const mainTitle = document.createElement("h2");
+  mainTitle.style.cssText = `
+    background-color: #1f3c73; 
+    color: #ffffff; 
+    font-size: 19px; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    margin-bottom: 20px; 
+    padding: 15px; 
+    border-radius: 4px; 
+    text-align: justify;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    line-height: 1.3;
+    font-family: sans-serif;
+  `;
+  mainTitle.textContent = "PROCESO DE DESEMBOLSO DE CRÉDITO";
+  container.appendChild(mainTitle);
+
+  // --- TARJETA 1 ---
+  const t1 = `
+    <p style="margin-top: 0; margin-bottom: 8px; font-weight: bold; color: #1f3c73;">1. ACTIVIDADES PREVIAS AL DESEMBOLSO.</p>
+    <p style="margin-bottom: 5px;"><strong>a.</strong> Confirma que el crédito haya sido sesionado y autorizado por alguno de los órganos facultados (Comité de crédito, Subcomité de crédito, Gerente de sucursal).</p>
+    <p style="margin-bottom: 5px;"><strong>b.</strong> Una vez confirmado el monto total autorizado, se informa a los integrantes del grupo y se programa el día y hora para desembolso.</p>
+    <p style="margin-bottom: 0;"><strong>c.</strong> Agenda el recurso con el Ejecutivo de servicios, indicando <strong>monto, día y hora programados para el desembolso.</strong></p>
+  `;
+  container.appendChild(crearTarjetaProceso(t1));
+
+  // --- TARJETA 2 ---
+  const t2 = `
+    <p style="margin-top: 0; margin-bottom: 8px; font-weight: bold; color: #1f3c73;">2. AJUSTES EN SISTEMA. (El día del desembolso)</p>
+    <p style="margin-bottom: 5px;"><strong>a.</strong> Revisa el crédito y <strong>corrobora que se encuentre autorizado en sistema y que la fecha de desembolso sea correcta.</strong></p>
+    <p style="margin-bottom: 5px;"><strong>b. Comunícate con el grupo para confirmar el desembolso y solicita a los integrantes que decidan el día de pago, </strong>(Considerando que preferentemente elijan el día de la semana que más se les facilite para realizar sus pagos).</p>
+    <p style="margin-bottom: 0;"><strong>c. Si el día de pago elegido es un día distinto al día del desembolso, </strong>ajusta el día de pago en el módulo de crédito, por ejemplo, si el desembolso es lunes y el grupo quisiera pagar los jueves.</p>
+  `;
+  container.appendChild(crearTarjetaProceso(t2));
+
+  // --- TARJETA 3 ---
+  const t3 = `
+    <p style="margin-top: 0; margin-bottom: 8px; font-weight: bold; color: #1f3c73;">3. IMPRESIÓN DE DOCUMENTOS BASE.</p>
+    <p style="margin-bottom: 8px;">Después de a ver ajustado ó confirmado en sistema la fecha de desembolso y día de pago, en el crédito, dirígete a la botonera e ingresa a <mark>“IMPRESIÓN DE DOCUMENTOS”</mark> para generar e imprimir la siguiente documentación:</p>
+    <p style="margin-bottom: 5px; padding-left: 15px;"><strong>a. SOLICITUD DE CRÉDITO AUTORIZADA.</p>
+    <p style="margin-bottom: 5px; padding-left: 15px;">b. CONTRATO DE CRÉDITO. (carátula y/o anexos)</p>
+    <p style="margin-bottom: 0; padding-left: 15px;">c. PAGARÉ DE CRÉDITO.</strong></p>
+  `;
+  container.appendChild(crearTarjetaProceso(t3));
+
+  // --- TARJETA 4 ---
+  const t4 = `
+    <p style="margin-top: 0; margin-bottom: 8px; font-weight: bold; color: #1f3c73;">4. INICIO DEL DESEMBOLSO.</p>
+    <p style="margin-bottom: 8px;">Para dar inicio con el desembolso es necesario que ya estén presentes todos los integrantes reunidos para realizar lo siguiente:</p>
+    <p style="margin-bottom: 8px;"><strong>a.</strong> En presencia de todos los integrantes, informa nuevamente los montos autorizados a cada integrante, el monto total autorizado al grupo, días de pago acordado, fecha del primer y último pago, tasa de interés moratoria en caso de atraso e <strong>informa al grupo que todos son responsables del monto total del crédito por ser un grupo solidario y por la firma del pagaré colectivo.</strong></p>
+    <p style="margin-bottom: 8px;"><strong>b. Asesora al grupo para que definan un horario y en donde se reunirán los pagos, quien será el responsable de reunirlos y realizar el depósito.</strong> Además, es recomendable indicarles que <strong>creen un grupo de WhatsApp en donde te incluyan para que se facilite la comunicación hacia todos. </strong>El grupo de WhatsApp <strong>también se utilizará para que cada integrante informe cada que entregue su pago a quien este a cargo de reunirlos y, por último, la persona responsable de realizar el depósito deberá enviar evidencia de las tablas de pago selladas o del comprobante del depósito.</strong></p>
+    <p style="margin-bottom: 0;"><strong>c. Una vez que se haya informado todo lo anterior</strong> al grupo y ellos estén de acuerdo, <strong>solicita las identificaciones vigentes y recaba las firmas de cada uno de ellos en los documentos base </strong>(Solicitud de crédito, pagaré, contrato) <strong>y en los documentos que requieran firma en el expediente físico.</strong></p>
+  `;
+  container.appendChild(crearTarjetaProceso(t4));
+
+  // --- TARJETA 5 ---
+  const t5 = `
+    <p style="margin-top: 0; margin-bottom: 8px; font-weight: bold; color: #1f3c73;">5. REVISIÓN DE FIRMAS.</p>
+    <p style="margin-bottom: 8px;">Una vez que todos los integrantes hayan firmado, la documentación deberá ser revisada por el área de mesa de control y el proceso dependerá si en tu sucursal cuenta o no con algún integrante de esta área.</p>
+    <p style="margin-bottom: 8px;"><strong>a. Si la sucursal cuenta con la figura de mesa de control,</strong> únicamente debes llevar todos los expedientes físicos y documentación base con las firmas correspondientes, así como las identificaciones vigentes en original para la revisión.</p>
+    <p style="margin-bottom: 8px;"><strong>b. En las sucursales que no cuentan con esta figura, se deberá digitalizar en: <mark>Módulo de crédito > Pestaña digitalización > Opción “DOCUMENTOS BASE PARA PERMITIR DESEMBOLSO”</mark> los siguientes documentos firmados en un solo PDF:</p>
+    <ul style="margin: 0 0 8px 0; padding-left: 30px; list-style-type: square;">
+      <li>Solicitud de crédito.</li>
+      <li>Contrato y anexos.</li>
+      <li>Pagaré colectivo.</li>
+      <li>Acta de sesión.</li>
+      <li>Identificaciones de ambos lados</strong>.</li>
+    </ul>
+    <p style="margin-bottom: 8px; padding-left: 15px;">Una vez que esta información se encuentre digitalizada en sistema, <strong>registra tu solicitud para desembolso</strong> en el acceso que se encuentra <strong>en Intranet</strong> denominado <mark><strong>“MC – SOLICITUD DE DESEMBOLSO”</mark></strong></p>
+    <p style="margin-bottom: 0;"><strong>c.</strong> En ambos casos, <strong>después de que el área de mesa de control</strong> revise firmas <strong>y autorice el desembolso,</strong> debes ir a la botonera del crédito y procesar el desembolso para que el recurso sea distribuido a los integrantes. <strong>El sistema genera la póliza de desembolso, sin embargo, este formato no se imprime ni requiere de las firmas de acuerdo con el manual de crédito vigente.</strong></p>
+  `;
+  container.appendChild(crearTarjetaProceso(t5));
+
+  // --- TARJETA 6 ---
+  const t6 = `
+    <p style="margin-top: 0; margin-bottom: 8px; font-weight: bold; color: #1f3c73;">6. ENTREGA DE PLAN Y CONTROL DE PAGOS.</p>
+    <p style="margin-bottom: 8px;">Cuando el recurso del crédito se haya distribuido a cada integrante realiza lo siguiente:</p>
+    <p style="margin-bottom: 8px;"><strong>a.</strong> En la botonera del crédito, <strong>genera e imprime 2 juegos del plan de pagos del grupo. (Uno será entregado al grupo y en el segundo se deberán recabar nombre y firma de los integrantes</strong> y preferentemente el presidente <strong>agregará la leyenda “Recibimos plan de pagos” and la fecha).</strong></p>
+    <p style="margin-bottom: 8px;"><strong>b.</strong> En la botonera del crédito selecciona <mark>“IMPRESIÓN DE DOCUMENTOS”</mark>, <strong>genera e imprime el <mark>“CONTROL DE PAGO GRUPAL”</mark></strong> (Debe <strong>entregarse al grupo 1 carpeta que contenga 1 tabla por cada cuota del ciclo y el plan de pagos</strong> generado para el grupo)</p>
+    <p style="margin-bottom: 0;"><strong>c.</strong> Una vez que los socios hayan firmado el plan de pagos, <strong>entrega la identificación oficial y la instrucción para el retiro en el área de cajas.</strong></p>
+  `;
+  container.appendChild(crearTarjetaProceso(t6));
+
+  // --- TARJETA DE NOTA FINAL ---
+  const tNota = `
+    <p style="margin: 0; font-size: 12px; color: #121212;"><strong>NOTA: EN LAS SUCURSALES QUE NO CUENTAN CON LA FIGURA DE MESA DE CONTROL, EL ASESOR DEBERÁ DIGITALIZAR Y RESGUARDAR LA DOCUMENTACIÓN GENERADA Y FIRMADA.</strong></p>
+  `;
+  container.appendChild(crearTarjetaProceso(tNota));
+
+  return { type: 'html', content: container };
+}
+
 if (keywords.ingresos.some(kw => lower.includes(kw))) {
   const data = {
     titulo: "COMPROBANTE DE INGRESOS",
