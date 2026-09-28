@@ -3730,54 +3730,132 @@ if (window.elementSdk) {
   });
 }
 
+
   </script>
- <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+  import { 
+    getAuth, 
+    signInWithEmailAndPassword, 
+    onAuthStateChanged, 
+    signOut, 
+    setPersistence, 
+    browserSessionPersistence 
+  } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAA8pgcb4RWWcA7stNmqnrAgfpgTZnlo_c",
-      authDomain: "chat-solidario.firebaseapp.com",
-      projectId: "chat-solidario",
-      storageBucket: "chat-solidario.firebasestorage.app",
-      messagingSenderId: "135166703419",
-      appId: "1:135166703419:web:a68dd015787ee60894a91e"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyAA8pgcb4RWWcA7stNmqnrAgfpgTZnlo_c",
+    authDomain: "chat-solidario.firebaseapp.com",
+    projectId: "chat-solidario",
+    storageBucket: "chat-solidario.firebasestorage.app",
+    messagingSenderId: "135166703419",
+    appId: "1:135166703419:web:a68dd015787ee60894a91e"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-    // CONTROL DE ACCESO
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        document.getElementById('pantalla-login').style.display = 'none';
-        document.getElementById('contenido-pwa').style.display = 'block';
-      } else {
-        document.getElementById('pantalla-login').style.display = 'flex';
-        document.getElementById('contenido-pwa').style.display = 'none';
+  let timerAlerta;
+  let timerCierre;
+  let horaMinimizado = null;
+
+// TIEMPOS EN MILISEGUNDOS
+const TIEMPO_ALERTA = (11 * 60 + 55) * 60 * 1000; // 11 horas y 55 minutos (42,900,000 ms)
+const TIEMPO_CIERRE = 12 * 60 * 60 * 1000;         // 12 horas completas (43,200,000 ms)
+	
+  function limpiarTemporizadores() {
+    if (timerAlerta) clearTimeout(timerAlerta);
+    if (timerCierre) clearTimeout(timerCierre);
+    horaMinimizado = null;
+  }
+
+  // CONTROL DE ACCESO
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById('pantalla-login').style.display = 'none';
+      document.getElementById('contenido-pwa').style.display = 'block';
+    } else {
+      document.getElementById('pantalla-login').style.display = 'flex';
+      document.getElementById('contenido-pwa').style.display = 'none';
+      limpiarTemporizadores();
+    }
+  });
+
+  // DETECTAR SEGUNDO PLANO
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      horaMinimizado = Date.now();
+
+      // ALERTA A LOS 55 MINUTOS
+      timerAlerta = setTimeout(() => {
+        if (auth.currentUser) {
+          console.log("SE ALCANZÓ EL TIEMPO LÍMITE DE ESPERA.");
+        }
+      }, TIEMPO_ALERTA);
+
+      // CIERRE A LOS 60 MINUTOS
+      timerCierre = setTimeout(() => {
+        if (auth.currentUser) {
+          signOut(auth).then(() => {
+            console.log("SESIÓN CERRADA POR INACTIVIDAD.");
+          });
+        }
+      }, TIEMPO_CIERRE);
+
+    } else if (document.visibilityState === "visible") {
+      if (horaMinimizado && auth.currentUser) {
+        const tiempoInactivo = Date.now() - horaMinimizado;
+
+        // SI PASARON ENTRE 715 Y 720 MINUTOS
+        if (tiempoInactivo >= TIEMPO_ALERTA && tiempoInactivo < TIEMPO_CIERRE) {
+          limpiarTemporizadores();
+          const deseaContinuar = confirm("TU SESIÓN ESTÁ A PUNTO DE VENCER. ¿DESEAS CONTINUAR EN LA APLICACIÓN?");
+          
+          if (!deseaContinuar) {
+            signOut(auth).then(() => console.log("SESIÓN CERRADA POR EL USUARIO."));
+          }
+        } else if (tiempoInactivo < TIEMPO_ALERTA) {
+          // SI REGRESÓ ANTES DE LOS 715 MINUTOS, REINICIA LOS CONTADORES
+          limpiarTemporizadores();
+        }
       }
-    });
+    }
+  });
 
-    // BOTÓN LOGUEAR
-    document.getElementById('btnEntrar').onclick = () => {
+  // BOTÓN LOGUEAR
+  const btnEntrar = document.getElementById('btnEntrar');
+  if (btnEntrar) {
+    btnEntrar.onclick = () => {
       const email = document.getElementById('loginEmail').value;
       const pass = document.getElementById('loginPass').value;
-      signInWithEmailAndPassword(auth, email, pass).catch(err => alert("Acceso denegado"));
+
+      if (!email || !pass) {
+        alert("POR FAVOR COMPLETA LOS CAMPOS");
+        return;
+      }
+
+      setPersistence(auth, browserSessionPersistence)
+        .then(() => {
+          return signInWithEmailAndPassword(auth, email, pass);
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("ACCESO DENEGADO. VERIFICA TUS CREDENCIALES.");
+        });
     };
+  }
 
-    // BOTÓN SALIR
-    document.getElementById('btnSalir').onclick = () => signOut(auth);
-  </script>
+  // BOTÓN SALIR
+  const btnSalir = document.getElementById('btnSalir');
+  if (btnSalir) {
+    btnSalir.onclick = () => signOut(auth);
+  }
+</script>
 
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/ACREIMEX-CHAT/service-worker.js")
-      .then(reg => console.log("SW cargado con éxito"));
-    }
-  </script>
 <script>
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/ACREIMEX-CHAT/service-worker.js")
+  // Usamos "./sw.js" para que busque el archivo sw.js en la carpeta actual
+  navigator.serviceWorker.register("./sw.js")
     .then(registration => {
 
       registration.onupdatefound = () => {
@@ -3821,12 +3899,47 @@ if ("serviceWorker" in navigator) {
           }
         };
       };
-    });
+    })
+    .catch(err => console.error("Error al registrar el Service Worker:", err));
+
+  // Recarga automática de la pestaña al activarse un nuevo Service Worker
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!refreshing) {
+      window.location.reload();
+      refreshing = true;
+    }
+  });
 }
+
+// ENLACE DIRECTO DEL BOTÓN ENVIAR E INPUT
+document.addEventListener("DOMContentLoaded", () => {
+  const sendBtn = document.getElementById("sendBtn");
+  const messageInput = document.getElementById("messageInput");
+
+  function ejecutarEnvio() {
+    if (typeof sendMessage === "function") {
+      sendMessage();
+    } else if (typeof enviarMensaje === "function") {
+      enviarMensaje();
+    }
+  }
+
+  if (sendBtn) {
+    sendBtn.addEventListener("click", ejecutarEnvio);
+  }
+
+  if (messageInput) {
+    messageInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        ejecutarEnvio();
+      }
+    });
+  }
+});
 </script>
 <script src="app.js"></script>
+
 </body>
-
 </html>
-
-
